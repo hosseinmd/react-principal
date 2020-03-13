@@ -8,10 +8,33 @@ A state management with react context for apps which using hooks.
 High performance since provided observed connect to context.
 It's useful for global state management and complex container components state.
 
-## Example
+## Use
 
 ```js
-/* eslint-disable react-native/no-inline-styles */
+import { createStore, Provider } from "react-principal";
+
+const store = createStore({ reducer, initialState });
+
+// Param of useState give a function which define states which observe to next render don't effected on states which returned
+const { foo, bar } = store.useState(state => ({
+  foo: state.foo, // not matter what is amount, just define states which you want to observe for next render
+  bar: true,
+}));
+
+// Divided dispatch from state for performance
+const dispatch = store.useDispatch();
+
+// you can define the provider top of any where, which you want to use a store
+<Provider store={store}>
+  <Other />
+</Provider>;
+```
+
+## Example
+
+A simple todo list
+
+```js
 import React from "react";
 import { createStore, Provider } from "react-principal";
 
