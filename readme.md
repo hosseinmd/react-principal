@@ -4,7 +4,7 @@
 
 # react-principal
 
-State management used react context for apps which using hooks.
+A state management with react context for apps which using hooks.
 High performance since provided observed connect to context.
 It's useful for global state management and complex container components state.
 
