@@ -1,3 +1,4 @@
+//@ts-check
 import React, {
   useReducer,
   useCallback,
@@ -7,7 +8,7 @@ import React, {
 } from "react";
 
 /**
- * @type {React.FC<{store: any,dispatchListener:()=> void}}>}
+ * @type {React.FC<{store: any, dispatchListener: () => void}>}
  */
 export const Provider = memo(
   forwardRef((props, ref) => {
@@ -25,7 +26,9 @@ export const Provider = memo(
 
     const dispatchWrapped = useCallback(
       (...arg) => {
+        // @ts-ignore
         dispatch(...arg);
+        // @ts-ignore
         props.dispatchListener?.(...arg);
       },
       [props],

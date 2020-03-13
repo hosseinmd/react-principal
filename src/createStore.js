@@ -1,5 +1,7 @@
+// @ts-check
 import React, { createContext, useContext } from "react";
 import invariant from "invariant";
+
 /**
  * @template S
  * @typedef {object} Store
@@ -9,13 +11,14 @@ import invariant from "invariant";
 
 /**
  * @template T
- * @typedef {({state: T, initialState: T}) => void} Middleware
+ * @typedef {({state: T, initialState: any}) => void} Middleware
  */
 
 /**
  * @template S
  * @typedef {object} PrivateStore
  * @property {() => S} useState
+ * @property {() => ()=>void} useDispatch
  * @property {import("react").Context<S>} stateContext
  * @property {import("react").Context<() => void>} dispatchContext
  * @property {() => any} reducer
@@ -108,6 +111,7 @@ const getBits = (keys, usage) => {
 };
 
 const ReactCurrentDispatcher =
+  // @ts-ignore
   React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
     .ReactCurrentDispatcher;
 
