@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import invariant from "invariant";
 /**
  * @template S
@@ -67,7 +67,7 @@ const useContextWithObserve = (context, nextObserveState) => {
 
   const observeBit = getBits(keys, mappedState);
 
-  return useContext(context, observeBit);
+  return readContext(context, observeBit);
 };
 
 const getKeys = obj => {
@@ -106,3 +106,19 @@ const getBits = (keys, usage) => {
   });
   return result;
 };
+
+const ReactCurrentDispatcher =
+  React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+    .ReactCurrentDispatcher;
+
+function readContext(Context, observedBits) {
+  const dispatcher = ReactCurrentDispatcher.current;
+  if (dispatcher === null) {
+    throw new Error(
+      "react-cache: read and preload may only be called from within a " +
+        "component's render. They are not supported in event handlers or " +
+        "lifecycle methods.",
+    );
+  }
+  return dispatcher.readContext(Context, observedBits);
+}
