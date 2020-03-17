@@ -1,4 +1,4 @@
-import { createStore, persistMiddleCreator, setStoredState } from "../index";
+import { createStore, persistMiddleCreator, setStoredState } from "../src";
 import reducer from "./reducers";
 import initialState from "./initialState";
 
