@@ -10,11 +10,6 @@ import invariant from "invariant";
  */
 
 /**
- * @template T
- * @typedef {({state: T, initialState: any}) => void} Middleware
- */
-
-/**
  * @template S
  * @typedef {object} PrivateStore
  * @property {() => S} useState
@@ -23,8 +18,6 @@ import invariant from "invariant";
  * @property {import("react").Context<() => void>} dispatchContext
  * @property {() => any} reducer
  * @property {S} initialState
- * @property {Middleware<S>} middleware
- *
  */
 
 /**
@@ -32,10 +25,9 @@ import invariant from "invariant";
  * @param {object} param0
  * @param {() => any} param0.reducer
  * @param {T} param0.initialState
- * @param {Middleware<T>} param0.middleware
  * @returns {Store<T>}
  */
-export const createStore = ({ reducer, initialState, middleware }) => {
+export const createStore = ({ reducer, initialState }) => {
   const stateContext = createContext(initialState, calculateChangedBits);
   const dispatchContext = createContext(() => {});
 
@@ -45,7 +37,6 @@ export const createStore = ({ reducer, initialState, middleware }) => {
     dispatchContext,
     reducer,
     initialState,
-    middleware,
     useState: nextObserveState => {
       return useContextWithObserve(stateContext, nextObserveState);
     },

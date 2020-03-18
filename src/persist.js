@@ -1,50 +1,63 @@
 //@ts-check
-import { useEffect } from "react";
-
-const types = {
-  INITIALIZE_STATE_FROM_STORAGE: Symbol(),
-};
+const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
 /**
  * @param {any} Storage
  * @param {string} key
- * @param {(state: object) => object } mapStateToPersist
- * @returns {(state: object,initialState: object) => any}
+ * @param {(state: {}) => any } mapStateToPersist
  */
-export const persistMiddleCreator = function persistMiddleCreator(
+export const persisterCreator = function persisterCreator(
   Storage,
   key,
   mapStateToPersist,
 ) {
-  return function usePersistMiddleware({ state, initialState }) {
-    useEffect(() => {
-      if (state !== initialState) {
+  return {
+    /**
+     * @param {{}} state
+     * @param {{type: any}} action
+     */
+    persist(state, action) {
+      if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
         Storage.setItem(
           key,
-          mapStateToPersist ? mapStateToPersist(state) : state,
+          JSON.stringify(mapStateToPersist ? mapStateToPersist(state) : state),
         );
       }
-    }, [state, initialState]);
+    },
+
+    /**
+     * @param {any} storeRef
+     */
+    async setToState(storeRef) {
+      try {
+        const storedState = await Storage.getItem(key);
+
+        if (!storedState) {
+          return;
+        }
+
+        const stateObject = JSON.parse(storedState);
+
+        const { dispatch } = storeRef.current;
+        const mappedState = mapStateToPersist
+          ? mapStateToPersist(stateObject)
+          : stateObject;
+
+        dispatch({
+          type: INITIALIZE_STATE_FROM_STORAGE,
+          payload: mappedState,
+        });
+      } catch (error) {
+        if (__DEV__) {
+          console.error(error);
+        }
+      }
+    },
   };
 };
 
-export const setStoredState = async (Storage, key, store) => {
-  const storedState = await Storage.getItem(key);
-
-  if (!storedState) {
-    return;
-  }
-
-  const { dispatch } = store;
-
-  dispatch({
-    type: types.INITIALIZE_STATE_FROM_STORAGE,
-    payload: storedState,
-  });
-};
-
 export const persistReducer = reducer => (state, action) => {
-  if (action.type === types.INITIALIZE_STATE_FROM_STORAGE) {
+  if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
     return { ...state, ...action.payload };
   }
 
