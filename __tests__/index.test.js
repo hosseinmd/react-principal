@@ -1,6 +1,6 @@
 import renderer, { act } from "react-test-renderer";
 import React from "react";
-import { ExampleStoreTheme, changeTheme } from "../example";
+import { ExampleStoreTheme, changeTheme } from "../examples/store";
 import { Provider } from "../src";
 
 const TextInputTester = function() {

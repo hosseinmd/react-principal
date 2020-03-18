@@ -1,6 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from "react";
-import { createStore, Provider } from "../../../src";
+import React, { useRef, useEffect } from "react";
+import {
+  createStore,
+  Provider,
+  persisterCreator,
+  persistReducer,
+} from "../../../src";
 
 /*
  * ACTIONS (actions.js)
@@ -31,7 +36,7 @@ const toggleTodo = id => {
 /*
  * REDUCERS (reducers.js)
  */
-const reducer = (state, action) => {
+const reducer = persistReducer((state, action) => {
   switch (action.type) {
     case "ADD_TODO":
       return {
@@ -62,7 +67,7 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-};
+});
 
 const initialState = {
   todos: [],
@@ -202,8 +207,24 @@ const App = () => (
   </div>
 );
 
-export default () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
+const persister = persisterCreator(
+  window.localStorage,
+  "TODO",
+  ({ todos }) => ({
+    todos,
+  }),
 );
+
+export default () => {
+  const storeRef = useRef();
+
+  useEffect(() => {
+    persister.setToState(storeRef);
+  }, []);
+
+  return (
+    <Provider ref={storeRef} onStateDidChange={persister.persist} store={store}>
+      <App />
+    </Provider>
+  );
+};
