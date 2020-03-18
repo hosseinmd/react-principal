@@ -252,3 +252,42 @@ export default () => (
   </Provider>
 );
 ```
+
+### persist
+
+```js
+/// wrap reducer with
+const reducer = persistReducer((state, action) => {
+  // some reduce
+});
+
+// config a persister
+const persister = persisterCreator(
+  window.localStorage,
+  "UniqKey",
+  ({ todos }) => ({
+    todos, // persist just todos
+  }),
+);
+
+export default () => {
+  const storeRef = useRef();
+  // you can save ref in global place for access to state and dispatch out of children components.
+  // Doesn't need middleWare like redux, storeRef working vary well
+
+  useEffect(() => {
+    persister.setToState(storeRef);
+  }, []);
+
+  return (
+    <Provider
+      ref={storeRef}
+      // for catch state changes
+      onStateDidChange={persister.persist}
+      store={store}
+    >
+      <App />
+    </Provider>
+  );
+};
+```
