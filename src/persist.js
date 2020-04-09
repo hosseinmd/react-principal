@@ -1,4 +1,6 @@
 //@ts-check
+import { __DEV__ } from "./utils";
+
 const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
 /**

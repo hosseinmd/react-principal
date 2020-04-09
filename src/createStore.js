@@ -1,11 +1,12 @@
 // @ts-check
 import React, { createContext, useContext } from "react";
 import invariant from "invariant";
+import { __DEV__ } from "./utils";
 
 /**
  * @template S
  * @typedef {object} Store
- * @property {() => S} useState
+ * @property {(nextObserveState: () => S) => S} useState
  * @property {() => (state: S) => void} useDispatch
  */
 

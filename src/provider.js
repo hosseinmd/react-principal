@@ -12,10 +12,10 @@ import React, {
 /**
  * @template T
  * @typedef {object} ProviderProps
- * @property {(state: T, lastAction: {})=> void} onStateDidChange
- * @property {(state: T)=> any} initializer
+ * @property {(state: T, lastAction: {})=> void} [onStateDidChange]
+ * @property {(state: T)=> any} [initializer]
  * @property {import("./createStore").Store<T>} store
- * @property {React.Ref<{state: T, dispatch: () => void}>} ref
+ * @property {React.Ref<{state: T, dispatch: () => void}>} [ref]
  */
 
 /**

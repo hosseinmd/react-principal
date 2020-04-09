@@ -50,6 +50,9 @@
     "react": ">=16.12",
     "react-native": ">=0.61"
   },
+  "dependencies": {
+    "invariant": ">=2"
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
