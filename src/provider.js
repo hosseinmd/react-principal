@@ -2,11 +2,11 @@
 import React, {
   useReducer,
   useCallback,
-  useImperativeHandle,
   forwardRef,
   memo,
   useEffect,
   useRef,
+  useMemo,
 } from "react";
 
 /**
@@ -36,14 +36,13 @@ export const Provider = memo(
       dispatch(action);
     }, []);
 
-    useImperativeHandle(
-      ref,
-      () => ({
+    useMemo(() => {
+      // @ts-ignore
+      ref.current = {
         state,
         dispatch: dispatchWrapped,
-      }),
-      [state, dispatchWrapped],
-    );
+      };
+    }, [ref, state, dispatchWrapped]);
 
     useEffect(() => {
       if (lastAction.current) onStateDidChange?.(state, lastAction.current);
