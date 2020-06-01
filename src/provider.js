@@ -30,19 +30,16 @@ export const Provider = memo(
     const [state, dispatch] = useReducer(reducer, initialState, initializer);
     const lastAction = useRef();
 
-    const dispatchWrapped = useCallback(action => {
+    const dispatchWrapped = useCallback((action) => {
       lastAction.current = action;
       // @ts-ignore
       dispatch(action);
     }, []);
 
-    useMemo(() => {
-      // @ts-ignore
-      ref.current = {
-        state,
-        dispatch: dispatchWrapped,
-      };
-    }, [ref, state, dispatchWrapped]);
+    useHandleRef(ref, {
+      state,
+      dispatch: dispatchWrapped,
+    });
 
     useEffect(() => {
       if (lastAction.current) onStateDidChange?.(state, lastAction.current);
@@ -56,3 +53,14 @@ export const Provider = memo(
     );
   }),
 );
+
+function useHandleRef(ref, object) {
+  useMemo(() => {
+    if (ref && "current" in ref) {
+      ref.current = object;
+    } else if (typeof ref === "function") {
+      ref(object);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, Object.values(object)]);
+}
