@@ -10,11 +10,9 @@ import {
 /*
  * ACTIONS (actions.js)
  */
-let nextTodoId = 0;
 const addTodo = (text) => {
   return {
     type: "ADD_TODO",
-    id: nextTodoId++,
     text,
   };
 };
@@ -39,12 +37,13 @@ const toggleTodo = (id) => {
 const reducer = persistReducer((state, action) => {
   switch (action.type) {
     case "ADD_TODO":
+      const id = (state.todos[state.todos.length - 1]?.id || 0) + 1;
       return {
         ...state,
         todos: [
           ...state.todos,
           {
-            id: action.id,
+            id,
             text: action.text,
             completed: false,
           },
@@ -102,10 +101,10 @@ const Todo = ({ completed, text, id }) => {
 };
 
 const VisibleTodoList = () => {
-  const { todos, visibilityFilter } = store.useState((state) => ({
-    todos: state.todos,
-    visibilityFilter: state.visibilityFilter,
-  }));
+  const { todos, visibilityFilter } = store.useState([
+    "todos",
+    "visibilityFilter",
+  ]);
 
   const visibleTodos = getVisibleTodos(todos, visibilityFilter);
 
@@ -131,9 +130,8 @@ const getVisibleTodos = (todos, filter) => {
 
 const FilterLink = ({ children, filter }) => {
   const dispatch = store.useDispatch();
-  const { visibilityFilter } = store.useState(() => ({
-    visibilityFilter: true,
-  }));
+  const { visibilityFilter } = store.useState(["visibilityFilter"]);
+
   const active = filter === visibilityFilter;
 
   const onClick = () => {
@@ -200,13 +198,14 @@ let AddTodo = () => {
 
 const App = () => (
   <div>
-    <h1>React Redux TODO App</h1>
+    <h1>React Principal TODO App</h1>
     <AddTodo />
     <VisibleTodoList />
     <Footer />
   </div>
 );
 
+// Store state Persister
 const persister = persisterCreator(
   window.localStorage,
   "TODO",
