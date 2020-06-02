@@ -12,10 +12,10 @@ import React, {
 /**
  * @template T
  * @typedef {object} ProviderProps
- * @property {(state: T, lastAction: {})=> void} [onStateDidChange]
- * @property {(state: T)=> any} [initializer]
+ * @property {(state: T, lastAction: {}) => void} [onStateDidChange]
+ * @property {(state: T) => any} [initializer]
  * @property {import("./createStore").Store<T>} store
- * @property {React.Ref<{state: T, dispatch: () => void}>} [ref]
+ * @property {React.Ref<{ state: T; dispatch: () => void }>} [ref]
  */
 
 /**
@@ -24,7 +24,7 @@ import React, {
  */
 export const Provider = memo(
   forwardRef(({ children, store, onStateDidChange, initializer }, ref) => {
-    /**@type {import("./createStore").PrivateStore<{}>} */
+    /** @type {import("./createStore").PrivateStore<{}>} */
     // @ts-ignore
     const { reducer, initialState, stateContext, dispatchContext } = store;
     const [state, dispatch] = useReducer(reducer, initialState, initializer);

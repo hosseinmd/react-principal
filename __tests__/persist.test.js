@@ -15,12 +15,12 @@ const StorageMock = {
 
 const persister = persisterCreator(StorageMock, "Theme");
 
-const TextInputTester = function() {
+function TextInputTester() {
   const { theme } = ExampleStoreTheme.useState(() => ({
     theme: true,
   }));
   return <p theme={theme} />;
-};
+}
 
 let themeStoreRef;
 const App = () => {

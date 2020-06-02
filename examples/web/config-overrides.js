@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 // const appDirectory = fs.realpathSync(process.cwd())
-const resolveApp = relativePath => path.resolve(__dirname, relativePath);
+const resolveApp = (relativePath) => path.resolve(__dirname, relativePath);
 // our packages that will now be included in the CRA build step
 const appIncludes = [
   resolveApp("./src"),
@@ -13,7 +13,7 @@ const appIncludes = [
 module.exports = function override(config, env) {
   // allow importing from outside of src folder
   config.resolve.plugins = config.resolve.plugins.filter(
-    plugin => plugin.constructor.name !== "ModuleScopePlugin",
+    (plugin) => plugin.constructor.name !== "ModuleScopePlugin",
   );
 
   config.module.rules[0].include = appIncludes;

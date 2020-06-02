@@ -14,7 +14,7 @@ import { __DEV__ } from "./utils";
  * @template S
  * @typedef {object} PrivateStore
  * @property {() => S} useState
- * @property {() => ()=>void} useDispatch
+ * @property {() => () => void} useDispatch
  * @property {import("react").Context<S>} stateContext
  * @property {import("react").Context<() => void>} dispatchContext
  * @property {() => any} reducer
@@ -32,13 +32,13 @@ export const createStore = ({ reducer, initialState }) => {
   const stateContext = createContext(initialState, calculateChangedBits);
   const dispatchContext = createContext(() => {});
 
-  /**@type {PrivateStore<T>} */
+  /** @type {PrivateStore<T>} */
   const store = {
     stateContext,
     dispatchContext,
     reducer,
     initialState,
-    useState: nextObserveState => {
+    useState: (nextObserveState) => {
       return useContextWithObserve(stateContext, nextObserveState);
     },
     useDispatch: () => useContext(dispatchContext),
@@ -65,7 +65,7 @@ const useContextWithObserve = (context, nextObserveState) => {
   return readContext(context, observeBit);
 };
 
-const getKeys = obj => {
+const getKeys = (obj) => {
   return Object.keys(obj).sort();
 };
 
@@ -80,7 +80,7 @@ const calculateChangedBits = (prev, next) => {
     );
   }
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (prev[key] !== next[key]) {
       changed[key] = next[key];
     }

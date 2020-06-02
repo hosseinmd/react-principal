@@ -6,7 +6,7 @@ const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 /**
  * @param {any} Storage
  * @param {string} key
- * @param {(state: {}) => any } mapStateToPersist
+ * @param {(state: {}) => any} mapStateToPersist
  */
 export const persisterCreator = function persisterCreator(
   Storage,
@@ -16,7 +16,7 @@ export const persisterCreator = function persisterCreator(
   return {
     /**
      * @param {{}} state
-     * @param {{type: any}} action
+     * @param {{ type: any }} action
      */
     persist(state, action) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
@@ -27,9 +27,7 @@ export const persisterCreator = function persisterCreator(
       }
     },
 
-    /**
-     * @param {any} storeRef
-     */
+    /** @param {any} storeRef */
     async setToState(storeRef) {
       try {
         const storedState = await Storage.getItem(key);
@@ -58,7 +56,7 @@ export const persisterCreator = function persisterCreator(
   };
 };
 
-export const persistReducer = reducer => (state, action) => {
+export const persistReducer = (reducer) => (state, action) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
     return { ...state, ...action.payload };
   }

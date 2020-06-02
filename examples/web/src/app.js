@@ -11,7 +11,7 @@ import {
  * ACTIONS (actions.js)
  */
 let nextTodoId = 0;
-const addTodo = text => {
+const addTodo = (text) => {
   return {
     type: "ADD_TODO",
     id: nextTodoId++,
@@ -19,14 +19,14 @@ const addTodo = text => {
   };
 };
 
-const setVisibilityFilter = filter => {
+const setVisibilityFilter = (filter) => {
   return {
     type: "SET_VISIBILITY_FILTER",
     filter,
   };
 };
 
-const toggleTodo = id => {
+const toggleTodo = (id) => {
   return {
     type: "TOGGLE_TODO",
     id,
@@ -53,7 +53,7 @@ const reducer = persistReducer((state, action) => {
     case "TOGGLE_TODO":
       return {
         ...state,
-        todos: state.todos.map(todo =>
+        todos: state.todos.map((todo) =>
           todo.id === action.id
             ? { ...todo, completed: !todo.completed }
             : todo,
@@ -82,7 +82,7 @@ const store = createStore({ reducer, initialState });
 
 const Todo = ({ completed, text, id }) => {
   const dispatch = store.useDispatch();
-  const onTodoClick = e => {
+  const onTodoClick = (e) => {
     e.preventDefault();
     dispatch(toggleTodo(id));
   };
@@ -102,7 +102,7 @@ const Todo = ({ completed, text, id }) => {
 };
 
 const VisibleTodoList = () => {
-  const { todos, visibilityFilter } = store.useState(state => ({
+  const { todos, visibilityFilter } = store.useState((state) => ({
     todos: state.todos,
     visibilityFilter: state.visibilityFilter,
   }));
@@ -111,7 +111,7 @@ const VisibleTodoList = () => {
 
   return (
     <div className="todo-list">
-      {visibleTodos.map(todo => (
+      {visibleTodos.map((todo) => (
         <Todo key={todo.id} {...todo} />
       ))}
     </div>
@@ -123,9 +123,9 @@ const getVisibleTodos = (todos, filter) => {
     case "SHOW_ALL":
       return todos;
     case "SHOW_COMPLETED":
-      return todos.filter(t => t.completed);
+      return todos.filter((t) => t.completed);
     case "SHOW_ACTIVE":
-      return todos.filter(t => !t.completed);
+      return todos.filter((t) => !t.completed);
   }
 };
 
@@ -147,7 +147,7 @@ const FilterLink = ({ children, filter }) => {
   return (
     <a
       href="#"
-      onClick={e => {
+      onClick={(e) => {
         e.preventDefault();
         onClick();
       }}
@@ -175,7 +175,7 @@ let AddTodo = () => {
     <div>
       <form
         className="form-inline"
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           if (!input.value.trim()) {
             return;
@@ -186,7 +186,7 @@ let AddTodo = () => {
       >
         <input
           className="form-control col-md-10"
-          ref={node => {
+          ref={(node) => {
             input = node;
           }}
         />

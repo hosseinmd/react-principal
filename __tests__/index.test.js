@@ -3,7 +3,7 @@ import React from "react";
 import { ExampleStoreTheme, changeTheme } from "../examples/store";
 import { Provider } from "../src";
 
-const TextInputTester = function() {
+function TextInputTester() {
   const { theme } = ExampleStoreTheme.useState();
   const dispatch = ExampleStoreTheme.useDispatch();
 
@@ -16,7 +16,7 @@ const TextInputTester = function() {
       {theme}
     </p>
   );
-};
+}
 
 let component;
 let tree;
