@@ -51,7 +51,7 @@ const persister = persisterCreator(
 
 export default () => {
   const storeRef = useRef();
-  // you can save ref in global place for access to state and dispatch out of children components.
+  // you can save ref in global place for access to state and dispatch out of children components like `storeRef.current.state`
   // Doesn't need middleWare like redux, storeRef working vary well
 
   useEffect(() => {
