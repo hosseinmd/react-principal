@@ -1,11 +1,20 @@
 // @ts-check
+
 import React from "react";
 import invariant from "invariant";
 import { __DEV__ } from "./utils";
 
+/**
+ * @param {React.Context<any>} context
+ * @param {string[]} nextObserveState
+ */
 function useContextWithObserve(context, nextObserveState) {
-  const stateKeys = getKeys(context._currentValue);
+  const stateKeys = getKeys(
+    // @ts-ignore
+    context._currentValue,
+  );
 
+  // default observe to whole state
   let observeKeys = stateKeys;
 
   if (nextObserveState) {
@@ -14,8 +23,14 @@ function useContextWithObserve(context, nextObserveState) {
         Array.isArray(nextObserveState),
         `nextObserveState expected to be an Array of string but ${typeof nextObserveState} was received`,
       );
+      nextObserveState.forEach((observeKey) => {
+        invariant(
+          stateKeys.includes(observeKey),
+          `nextObserveState expected to be an Array of state keys but ${observeKey} is not one of the state`,
+        );
+      });
     }
-    observeKeys = nextObserveState;
+    observeKeys = nextObserveState.sort();
   }
 
   const observeBit = getBits(stateKeys, observeKeys);
@@ -23,10 +38,15 @@ function useContextWithObserve(context, nextObserveState) {
   return readContext(context, observeBit);
 }
 
+/** @param {{}} obj */
 function getKeys(obj) {
   return Object.keys(obj).sort();
 }
 
+/**
+ * @param {{ [x: string]: any }} prev
+ * @param {any} next
+ */
 function calculateChangedBits(prev, next) {
   let changed = {};
   const keys = getKeys(next);
@@ -44,19 +64,30 @@ function calculateChangedBits(prev, next) {
     }
   });
 
-  const result = getBits(keys, changed);
+  const changedKeys = getKeys(changed);
+
+  const result = getBits(keys, changedKeys);
 
   return result;
 }
 
+/**
+ * @param {string[]} keys
+ * @param {string[]} usage
+ */
 function getBits(keys, usage) {
   let result = 0;
+  /**
+   * @param {string} key
+   * @param {number} index
+   */
   keys.forEach((key, index) => {
-    if (usage.hasOwnProperty(key)) {
+    if (usage.includes(key)) {
       // eslint-disable-next-line no-bitwise
       result |= 1 << index % 31;
     }
   });
+
   return result;
 }
 
@@ -65,6 +96,10 @@ const ReactCurrentDispatcher =
   React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
     .ReactCurrentDispatcher;
 
+/**
+ * @param {any} Context
+ * @param {number} observedBits
+ */
 function readContext(Context, observedBits) {
   const dispatcher = ReactCurrentDispatcher.current;
   if (dispatcher === null) {

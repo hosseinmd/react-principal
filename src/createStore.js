@@ -5,7 +5,7 @@ import { calculateChangedBits, useContextWithObserve } from "./observe";
 /**
  * @template S
  * @typedef {object} Store
- * @property {(nextObserveState: () => S) => S} useState
+ * @property {(nextObserveState: (keyof S)[]) => S} useState
  * @property {() => (state: S) => void} useDispatch
  */
 
@@ -14,13 +14,16 @@ import { calculateChangedBits, useContextWithObserve } from "./observe";
  * @typedef {object} PrivateStore
  * @property {() => S} useState
  * @property {() => () => void} useDispatch
- * @property {import("react").Context<S>} stateContext
- * @property {import("react").Context<() => void>} dispatchContext
+ * @property {React.Context<S>} stateContext
+ * @property {React.Context<() => void>} dispatchContext
  * @property {() => any} reducer
  * @property {S} initialState
  */
 
 /**
+ * This function give you an store, use that in your components which want to
+ * connect to store and provider
+ *
  * @template T
  * @param {object} param0
  * @param {() => any} param0.reducer
