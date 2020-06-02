@@ -5,23 +5,21 @@
 # react-principal
 
 A state management with react context for apps which using hooks.
+Acutely, react-principal is a wrapper for react context with better developer experience.
 High performance since provided observed connect to context.
-It's useful for global state management and complex container components state.
+It's useful for global state management and complex component state.
 
 ## Use
+Visit Examples folder for more understand react-principal usage
 
 ```js
 import { createStore, Provider } from "react-principal";
 
 const store = createStore({ reducer, initialState });
 
-// Param of useState give a function which define states which observe to next render don't effected on states which returned
-const { foo, bar } = store.useState(state => ({
-  foo: state.foo, // not matter what is amount, just define states which you want to observe for next render
-  bar: true,
-}));
+const { foo, bar } = store.useState(["foo","bar"]) //define states which you want to update when they changed. if is not defined store listen to whole states change
 
-// Divided dispatch from state for performance
+// Divided dispatch from state for performance, because dispatch function never change
 const dispatch = store.useDispatch();
 
 // you can define the provider top of any where, which you want to use a store
@@ -44,7 +42,7 @@ const reducer = persistReducer((state, action) => {
 
 // config a persister
 const persister = persisterCreator(
-  window.localStorage,
+  window.localStorage, // or react-native asyncStorage
   "UniqKey",
   ({ todos }) => ({
     todos, // persist just todos
