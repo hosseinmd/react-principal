@@ -6,12 +6,13 @@ import { __DEV__ } from "./utils";
 
 /**
  * @param {React.Context<any>} context
+ * @param {any} initialState
  * @param {string[]} nextObserveState
  */
-function useContextWithObserve(context, nextObserveState) {
+function useContextWithObserve(context, initialState, nextObserveState) {
   const stateKeys = getKeys(
     // @ts-ignore
-    context._currentValue,
+    initialState,
   );
 
   // default observe to whole state
@@ -21,12 +22,12 @@ function useContextWithObserve(context, nextObserveState) {
     if (__DEV__) {
       invariant(
         Array.isArray(nextObserveState),
-        `nextObserveState expected to be an Array of string but ${typeof nextObserveState} was received`,
+        `useState: nextObserveState expected to be an Array of string but ${typeof nextObserveState} was received`,
       );
       nextObserveState.forEach((observeKey) => {
         invariant(
           stateKeys.includes(observeKey),
-          `nextObserveState expected to be an Array of state keys but ${observeKey} is not one of the state`,
+          `useState: nextObserveState expected to be an Array of state keys but ${observeKey} is not one of the state`,
         );
       });
     }

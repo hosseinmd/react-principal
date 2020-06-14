@@ -41,7 +41,11 @@ export const createStore = ({ reducer, initialState }) => {
     reducer,
     initialState,
     useState: (nextObserveState) => {
-      return useContextWithObserve(stateContext, nextObserveState);
+      return useContextWithObserve(
+        stateContext,
+        initialState,
+        nextObserveState,
+      );
     },
     useDispatch: () => useContext(dispatchContext),
   };
