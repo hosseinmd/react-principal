@@ -70,3 +70,17 @@ export default () => {
   );
 };
 ```
+
+## ProvidersList
+
+This component is for organization providers
+
+```js
+function App() {
+  return (
+    <ProvidersList providers={[Provider1, Provider2, Provider3]}>
+      {appContainer}
+    </ProvidersList>
+  );
+}
+```

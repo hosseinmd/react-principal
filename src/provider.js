@@ -20,9 +20,14 @@ import React, {
 
 /**
  * @template T
- * @type {React.FC<ProviderProps<T>>}
+ * @typedef {React.FC<ProviderProps<T>>} ProviderComponent
  */
-export const Provider = memo(
+
+/**
+ * @template T
+ * @type {ProviderComponent<T>}
+ */
+const Provider = memo(
   forwardRef(({ children, store, onStateDidChange, initializer }, ref) => {
     /** @type {import("./createStore").PrivateStore<{}>} */
     // @ts-ignore
@@ -64,3 +69,28 @@ function useHandleRef(ref, object) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, Object.values(object)]);
 }
+
+/**
+ * @typedef {object} ProvidersListProps
+ * @property {ProviderComponent<any>[]} providers
+ */
+
+/**
+ * @example
+ *   function App() {
+ *     return (
+ *       <ProvidersList providers={[Provider1, Provider2, Provider3]}>
+ *         {appContainer}
+ *       </ProvidersList>
+ *     );
+ *   }
+ *
+ * @type {React.FC<ProvidersListProps>}
+ */
+function ProvidersList({ children, providers = [] }) {
+  return providers.reduce((previousValue, Current) => {
+    return <Current>{previousValue}</Current>;
+  }, children);
+}
+
+export { Provider, ProvidersList };
