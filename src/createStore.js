@@ -5,8 +5,8 @@ import { calculateChangedBits, useContextWithObserve } from "./observe";
 /**
  * @template S
  * @typedef {object} Store
- * @property {(nextObserveState: (keyof S)[]) => S} useState
- * @property {() => (state: S) => void} useDispatch
+ * @property {(nextObserveState?: (keyof S)[]) => S} useState
+ * @property {() => (action: any) => void} useDispatch
  */
 
 /**
@@ -31,6 +31,7 @@ import { calculateChangedBits, useContextWithObserve } from "./observe";
  * @returns {Store<T>}
  */
 export const createStore = ({ reducer, initialState }) => {
+  // @ts-ignore
   const stateContext = createContext(initialState, calculateChangedBits);
   const dispatchContext = createContext(() => {});
 
