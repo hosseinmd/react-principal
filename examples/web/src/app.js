@@ -5,7 +5,7 @@ import {
   Provider,
   persisterCreator,
   persistReducer,
-} from "../../../src";
+} from "../../../lib";
 
 /*
  * ACTIONS (actions.js)

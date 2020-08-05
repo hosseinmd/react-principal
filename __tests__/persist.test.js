@@ -1,7 +1,7 @@
 import renderer, { act } from "react-test-renderer";
 import React, { useRef } from "react";
 import { ExampleStoreTheme, changeTheme } from "../examples/store";
-import { Provider, persisterCreator } from "../src";
+import { Provider, persisterCreator } from "../lib";
 
 const StorageMock = {
   data: {},

@@ -1,15 +1,13 @@
-// @ts-check
-
 import React from "react";
+//@ts-ignore
 import invariant from "invariant";
 import { __DEV__ } from "./utils";
 
-/**
- * @param {React.Context<any>} context
- * @param {any} initialState
- * @param {string[]} nextObserveState
- */
-function useContextWithObserve(context, initialState, nextObserveState) {
+function useContextWithObserve(
+  context: React.Context<any>,
+  initialState: object,
+  nextObserveState?: any[],
+) {
   const stateKeys = getKeys(
     // @ts-ignore
     initialState,
@@ -39,17 +37,12 @@ function useContextWithObserve(context, initialState, nextObserveState) {
   return readContext(context, observeBit);
 }
 
-/** @param {{}} obj */
-function getKeys(obj) {
+function getKeys(obj: object) {
   return Object.keys(obj).sort();
 }
 
-/**
- * @param {{ [x: string]: any }} prev
- * @param {any} next
- */
-function calculateChangedBits(prev, next) {
-  let changed = {};
+function calculateChangedBits(prev: { [x: string]: any }, next: any) {
+  let changed: { [x: string]: any } = {};
   const keys = getKeys(next);
 
   if (__DEV__) {
@@ -72,11 +65,7 @@ function calculateChangedBits(prev, next) {
   return result;
 }
 
-/**
- * @param {string[]} keys
- * @param {string[]} usage
- */
-function getBits(keys, usage) {
+function getBits(keys: string[], usage: string[]) {
   let result = 0;
   /**
    * @param {string} key
@@ -97,11 +86,7 @@ const ReactCurrentDispatcher =
   React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
     .ReactCurrentDispatcher;
 
-/**
- * @param {any} Context
- * @param {number} observedBits
- */
-function readContext(Context, observedBits) {
+function readContext(Context: any, observedBits: number) {
   const dispatcher = ReactCurrentDispatcher.current;
   if (dispatcher === null) {
     throw new Error(

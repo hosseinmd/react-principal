@@ -1,5 +1,5 @@
 import * as types from "./types";
-import { createReducer, persistReducer } from "../../src";
+import { createReducer, persistReducer } from "../../lib";
 
 export default persistReducer(
   createReducer({

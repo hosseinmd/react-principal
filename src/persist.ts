@@ -1,24 +1,14 @@
-//@ts-check
 import { __DEV__ } from "./utils";
 
 const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
-/**
- * @param {any} Storage
- * @param {string} key
- * @param {(state: {}) => any} mapStateToPersist
- */
 export const persisterCreator = function persisterCreator(
-  Storage,
-  key,
-  mapStateToPersist,
+  Storage: any,
+  key: string,
+  mapStateToPersist: (state: {}) => any,
 ) {
   return {
-    /**
-     * @param {{}} state
-     * @param {{ type: any }} action
-     */
-    persist(state, action) {
+    persist(state: object, action: { type: any }) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
         Storage.setItem(
           key,
@@ -27,8 +17,7 @@ export const persisterCreator = function persisterCreator(
       }
     },
 
-    /** @param {any} storeRef */
-    async setToState(storeRef) {
+    async setToState(storeRef: any) {
       try {
         const storedState = await Storage.getItem(key);
 
@@ -56,7 +45,10 @@ export const persisterCreator = function persisterCreator(
   };
 };
 
-export const persistReducer = (reducer) => (state, action) => {
+export const persistReducer = (reducer: (state: any, action: any) => any) => (
+  state: any,
+  action: any,
+) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
     return { ...state, ...action.payload };
   }
