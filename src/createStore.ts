@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, Context } from "react";
 import { calculateChangedBits, useContextWithObserve } from "./observe";
-
+import { Reducer } from "./types";
 export interface Store<S> {
   useState(nextObserveState?: (keyof S)[]): S;
   useDispatch(): (action: any) => void;
@@ -11,7 +11,7 @@ export interface PrivateStore<S> {
   useDispatch(): (action: any) => void;
   stateContext: React.Context<S>;
   dispatchContext: React.Context<(action: any) => void>;
-  reducer: () => any;
+  reducer: Reducer;
   initialState: S;
 }
 
@@ -23,10 +23,9 @@ export const createStore = <T extends { [x: string]: any }>({
   reducer,
   initialState,
 }: {
-  reducer: () => any;
+  reducer: Reducer;
   initialState: T;
 }): Store<T> => {
-  // @ts-ignore
   const stateContext = createContext(initialState, calculateChangedBits);
   const dispatchContext = createContext<(action: any) => void>(() => {});
 

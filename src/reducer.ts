@@ -1,9 +1,8 @@
-type ReducerItem = (state: any, action: { type: string; payload: any }) => any;
+import { Reducer } from "./types";
 
-export const createReducer = (handlers: { [type: string]: ReducerItem }) => (
-  state: any,
-  action: any,
-) => {
+export const createReducer = (handlers: {
+  [type: string]: Reducer;
+}): Reducer => (state, action) => {
   if (!handlers.hasOwnProperty(action.type)) {
     return state;
   }

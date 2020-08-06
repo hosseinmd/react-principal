@@ -1,4 +1,5 @@
 import { __DEV__ } from "./utils";
+import { Reducer } from "./types";
 
 const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
@@ -45,9 +46,9 @@ export const persisterCreator = function persisterCreator(
   };
 };
 
-export const persistReducer = (reducer: (state: any, action: any) => any) => (
-  state: any,
-  action: any,
+export const persistReducer = (reducer: Reducer): Reducer => (
+  state,
+  action,
 ) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
     return { ...state, ...action.payload };

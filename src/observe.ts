@@ -8,10 +8,7 @@ function useContextWithObserve(
   initialState: object,
   nextObserveState?: any[],
 ) {
-  const stateKeys = getKeys(
-    // @ts-ignore
-    initialState,
-  );
+  const stateKeys = getKeys(initialState);
 
   // default observe to whole state
   let observeKeys = stateKeys;

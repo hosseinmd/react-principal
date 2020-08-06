@@ -7,10 +7,10 @@ import React, {
   useRef,
   useMemo,
 } from "react";
-import { PrivateStore } from "./createStore";
+import { Store, PrivateStore } from "./createStore";
 
 interface ProviderProps<T> {
-  store: PrivateStore<T>;
+  store: Store<T>;
   onStateDidChange?: (state: T, lastAction: any) => void;
   initializer?: (state: T) => any;
   ref?: React.Ref<{ state: T; dispatch: () => void }>;
@@ -23,9 +23,12 @@ const Provider = memo(
       { children, store, onStateDidChange, initializer }: ProviderProps<any>,
       ref,
     ) => {
-      /** @type {import("./createStore").PrivateStore<{}>} */
-      // @ts-ignore
-      const { reducer, initialState, stateContext, dispatchContext } = store;
+      const {
+        reducer,
+        initialState,
+        stateContext,
+        dispatchContext,
+      } = store as PrivateStore<any>;
       const [state, dispatch] = useReducer(
         reducer,
         initialState,
