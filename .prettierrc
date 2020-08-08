@@ -1,4 +1,4 @@
 {
   "trailingComma": "all",
-  "parser": "typescript"
+  "parser": "jsdoc-parser"
 }
