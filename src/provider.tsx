@@ -75,7 +75,7 @@ function useHandleRef(ref: any, object: any) {
 }
 
 interface ProvidersListProps {
-  providers: React.ComponentType[];
+  providers: ((props: any) => JSX.Element)[];
   children: React.ReactElement;
 }
 
