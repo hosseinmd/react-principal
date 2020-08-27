@@ -2,16 +2,18 @@
 
 [![install size](https://packagephobia.now.sh/badge?p=react-principal)](https://packagephobia.now.sh/result?p=react-principal) [![dependencies](https://david-dm.org/hosseinmd/react-principal.svg)](https://david-dm.org/hosseinmd/react-principal.svg)
 
-# react-principal
+# React-Principal
 
 A state management with react context for apps which using hooks.
 Acutely, react-principal is a wrapper for react context with better developer experience.
 High performance since provided observed connect to context.
 It's useful for global state management and complex component state.
 
+React-Principal internally used React.reducer for state.
+
 ## Use
 
-Visit Examples folder for more understand react-principal usage
+Before any think you should familiar with react reducer pattern.
 
 ```js
 import { createStore, Provider } from "react-principal";
@@ -47,6 +49,8 @@ const dispatch = store.useDispatch();
 ```
 
 ## Example
+
+Visit Examples folder for more understand react-principal usage
 
 A simple [Todo list App](https://github.com/hosseinmd/react-principal/blob/master/examples/web/src/app.js)
 
