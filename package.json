@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poolkhord/react-principal.git"
+    "url": "git+https://github.com/hosseinmd/react-principal.git"
   },
   "keywords": [
     "react-native",
@@ -27,9 +27,9 @@
   "author": "Hossein mohammadi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/poolkhord/react-principal/issues"
+    "url": "https://github.com/hosseinmd/react-principal/issues"
   },
-  "homepage": "https://github.com/poolkhord/react-principal#readme",
+  "homepage": "https://github.com/hosseinmd/react-principal#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
     "@react-native-community/eslint-config": "1.1.0",

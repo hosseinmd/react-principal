@@ -1,4 +1,16 @@
 {
   "trailingComma": "all",
-  "parser": "jsdoc-parser"
+  "overrides": [
+    {
+      "files": [
+        "*.tsx",
+        "*.ts",
+        "*.js",
+        "*.jsx"
+      ],
+      "options": {
+        "parser": "jsdoc-parser"
+      }
+    }
+  ]
 }

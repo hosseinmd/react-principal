@@ -1,6 +1,6 @@
 [![NPM](https://nodei.co/npm/react-principal.png)](https://nodei.co/npm/react-principal/)
 
-[![install size](https://packagephobia.now.sh/badge?p=react-principal)](https://packagephobia.now.sh/result?p=react-principal) [![dependencies](https://david-dm.org/poolkhord/react-principal.svg)](https://david-dm.org/poolkhord/react-principal.svg)
+[![install size](https://packagephobia.now.sh/badge?p=react-principal)](https://packagephobia.now.sh/result?p=react-principal) [![dependencies](https://david-dm.org/hosseinmd/react-principal.svg)](https://david-dm.org/hosseinmd/react-principal.svg)
 
 # react-principal
 
@@ -10,6 +10,7 @@ High performance since provided observed connect to context.
 It's useful for global state management and complex component state.
 
 ## Use
+
 Visit Examples folder for more understand react-principal usage
 
 ```js
@@ -17,20 +18,37 @@ import { createStore, Provider } from "react-principal";
 
 const store = createStore({ reducer, initialState });
 
-const { foo, bar } = store.useState(["foo","bar"]) //define states which you want to update when they changed. if is not defined store listen to whole states change
+function Component() {
+  const { foo, bar } = store.useState();
+  const dispatch = store.useDispatch();
+
+  return (
+    <p>
+      {foo} {bar}
+    </p>
+  );
+}
+
+// you can define the provider top of any where, which you want to use a store
+function App() {
+  <Provider store={store}>
+    <Component />
+  </Provider>;
+}
+```
+
+## Performance
+
+```js
+const { foo, bar } = store.useState(["foo", "bar"]); //define states which you want to update when they changed. if is not defined store listen to whole states change
 
 // Divided dispatch from state for performance, because dispatch function never change
 const dispatch = store.useDispatch();
-
-// you can define the provider top of any where, which you want to use a store
-<Provider store={store}>
-  <Other />
-</Provider>;
 ```
 
 ## Example
 
-A simple [Todo list App](https://github.com/poolkhord/react-principal/blob/master/examples/web/src/app.js)
+A simple [Todo list App](https://github.com/hosseinmd/react-principal/blob/master/examples/web/src/app.js)
 
 ### persist
 
