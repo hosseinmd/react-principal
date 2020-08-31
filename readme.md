@@ -10,6 +10,7 @@ High performance since provided observed connect to context.
 It's useful for global state management and complex component state.
 
 ## Use
+
 Visit Examples folder for more understand react-principal usage
 
 ```js
@@ -17,7 +18,7 @@ import { createStore, Provider } from "react-principal";
 
 const store = createStore({ reducer, initialState });
 
-const { foo, bar } = store.useState(["foo","bar"]) //define states which you want to update when they changed. if is not defined store listen to whole states change
+const { foo, bar } = store.useState(["foo", "bar"]); //define states which you want to update when they changed. if is not defined store listen to whole states change
 
 // Divided dispatch from state for performance, because dispatch function never change
 const dispatch = store.useDispatch();
@@ -84,3 +85,7 @@ function App() {
   );
 }
 ```
+
+### Utils
+
+<a href="./Utils Readme.md">Utils Readme.md</a>

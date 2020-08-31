@@ -3,12 +3,11 @@ import React from "react";
 import invariant from "invariant";
 import { __DEV__ } from "./utils";
 
-function useContextWithObserve(
-  context: React.Context<any>,
-  initialState: object,
-  nextObserveState?: any[],
-) {
-  const stateKeys = getKeys(initialState);
+function useContextWithObserve<T>(
+  context: React.Context<T>,
+  nextObserveState?: (keyof T)[],
+): T {
+  const stateKeys = getKeys((context as any)._currentValue);
 
   // default observe to whole state
   let observeKeys = stateKeys;
@@ -21,12 +20,12 @@ function useContextWithObserve(
       );
       nextObserveState.forEach((observeKey) => {
         invariant(
-          stateKeys.includes(observeKey),
+          stateKeys.includes(observeKey as string),
           `useState: nextObserveState expected to be an Array of state keys but ${observeKey} is not one of the state`,
         );
       });
     }
-    observeKeys = nextObserveState.sort();
+    observeKeys = nextObserveState.sort() as string[];
   }
 
   const observeBit = getBits(stateKeys, observeKeys);
@@ -64,10 +63,6 @@ function calculateChangedBits(prev: { [x: string]: any }, next: any) {
 
 function getBits(keys: string[], usage: string[]) {
   let result = 0;
-  /**
-   * @param {string} key
-   * @param {number} index
-   */
   keys.forEach((key, index) => {
     if (usage.includes(key)) {
       // eslint-disable-next-line no-bitwise

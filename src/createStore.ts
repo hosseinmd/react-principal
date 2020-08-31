@@ -35,11 +35,7 @@ export const createStore = <T extends { [x: string]: any }>({
     reducer,
     initialState,
     useState: (nextObserveState?: (keyof T)[]): T => {
-      return useContextWithObserve(
-        stateContext,
-        initialState,
-        nextObserveState,
-      );
+      return useContextWithObserve(stateContext, nextObserveState);
     },
     useDispatch: () => useContext(dispatchContext),
   };
