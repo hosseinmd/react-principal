@@ -1,9 +1,9 @@
-import React from "react";
+import React, { createContext } from "react";
 //@ts-ignore
 import invariant from "invariant";
 import { __DEV__ } from "./utils";
 
-function useContextWithObserve<T>(
+function useObserveContext<T>(
   context: React.Context<T>,
   nextObserveState?: (keyof T)[],
 ): T {
@@ -90,4 +90,8 @@ function readContext(Context: any, observedBits: number) {
   return dispatcher.readContext(Context, observedBits);
 }
 
-export { calculateChangedBits, useContextWithObserve };
+function createObserveContext<T>(defaultValue: T) {
+  return createContext(defaultValue, calculateChangedBits);
+}
+
+export { calculateChangedBits, useObserveContext, createObserveContext };

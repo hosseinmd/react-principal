@@ -27,12 +27,12 @@ export const reducer = createReducer({
 For better performance of context you could use this
 
 ```js
-import { calculateChangedBits, useContextWithObserve } from "react-principal";
+import { createObserveContext, useObserveContext } from "react-principal";
 
-const context = createContext({ foo: "foo", bar: "bar" }, calculateChangedBits);
+const context = createObserveContext({ foo: "foo", bar: "bar" });
 
 export function app() {
-  const { foo } = useContextWithObserve(context, ["foo"]);
+  const { foo } = useObserveContext(context, ["foo"]);
 
   ...
 }
