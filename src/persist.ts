@@ -46,7 +46,7 @@ export const persisterCreator = function persisterCreator(
   };
 };
 
-export const persistReducer = (reducer: Reducer): Reducer => (
+export const persistReducer = (reducer: Reducer<any>): Reducer<any> => (
   state,
   action,
 ) => {

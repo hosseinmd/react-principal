@@ -74,14 +74,14 @@ function useHandleRef(ref: any, object: any) {
   }, [ref, Object.values(object)]);
 }
 
-interface ProvidersListProps {
-  providers: React.ComponentType[];
-  children: React.ReactElement;
-}
+type ProvidersListProps = {
+  providers: ((props: any) => JSX.Element)[];
+  children: JSX.Element;
+};
 
 function ProvidersList({ children, providers = [] }: ProvidersListProps) {
-  return providers.reduce((previousValue, Current) => {
-    return <Current>{previousValue}</Current>;
+  return providers.reduce((previousValue, Current, index) => {
+    return <Current key={String(index)}>{previousValue}</Current>;
   }, children);
 }
 

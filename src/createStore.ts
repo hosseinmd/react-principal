@@ -11,7 +11,7 @@ export interface PrivateStore<S> {
   useDispatch(): (action: any) => void;
   stateContext: React.Context<S>;
   dispatchContext: React.Context<(action: any) => void>;
-  reducer: Reducer;
+  reducer: Reducer<S>;
   initialState: S;
 }
 
@@ -23,7 +23,7 @@ export const createStore = <T extends { [x: string]: any }>({
   reducer,
   initialState,
 }: {
-  reducer: Reducer;
+  reducer: Reducer<T>;
   initialState: T;
 }): Store<T> => {
   const stateContext = createObserveContext(initialState);

@@ -3,9 +3,10 @@
   "overrides": [
     {
       "files": [
-        "*.js",
+        "*.tsx",
         "*.ts",
-        "*.tsx"
+        "*.js",
+        "*.jsx"
       ],
       "options": {
         "parser": "jsdoc-parser"
