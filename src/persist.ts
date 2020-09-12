@@ -1,12 +1,12 @@
 import { __DEV__ } from "./utils";
-import { Reducer } from "./types";
+import { Reducer, Action, Optional } from "./types";
 
 const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
 export const persisterCreator = function persisterCreator(
   Storage: any,
   key: string,
-  mapStateToPersist: (state: {}) => any,
+  mapStateToPersist: <T>(state: T) => Optional<T>,
 ) {
   return {
     persist(state: object, action: { type: any }) {
@@ -46,10 +46,9 @@ export const persisterCreator = function persisterCreator(
   };
 };
 
-export const persistReducer = (reducer: Reducer<any>): Reducer<any> => (
-  state,
-  action,
-) => {
+export const persistReducer = <T, A extends Action>(
+  reducer: Reducer<T, A>,
+): Reducer<T, A> => (state, action) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
     return { ...state, ...action.payload };
   }
