@@ -3,13 +3,11 @@ import { Reducer, Action, Optional } from "./types";
 
 const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
-export const persisterCreator = function persisterCreator(
-  Storage: any,
-  key: string,
-  mapStateToPersist: <T>(state: T) => Optional<T>,
-) {
+export const persisterCreator = function persisterCreator<
+  T extends { [x: string]: any },
+>(Storage: any, key: string, mapStateToPersist: (state: T) => Optional<T>) {
   return {
-    persist(state: object, action: { type: any }) {
+    persist(state: any, action: { type: any }) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
         Storage.setItem(
           key,
