@@ -13,7 +13,7 @@ React-Principal internally used React.reducer for state.
 
 ## Use
 
-Before any think you should familiar with react reducer pattern.
+Before any think you should know react reducer pattern.
 
 ```js
 import { createStore, Provider } from "react-principal";
@@ -106,3 +106,7 @@ function App() {
   );
 }
 ```
+
+### Utils
+
+<a href="./Utils Readme.md">Utils Readme.md</a>
