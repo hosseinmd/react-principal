@@ -5,7 +5,7 @@ const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
 export const persisterCreator = function persisterCreator<
   T extends { [x: string]: any },
->(Storage: any, key: string, mapStateToPersist: (state: T) => Optional<T>) {
+>(Storage: any, key: string, mapStateToPersist?: (state: T) => Optional<T>) {
   return {
     persist(state: any, action: { type: any }) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
@@ -34,6 +34,18 @@ export const persisterCreator = function persisterCreator<
         dispatch({
           type: INITIALIZE_STATE_FROM_STORAGE,
           payload: mappedState,
+        });
+
+        /** Listening to events between tabs */
+        window.addEventListener?.("storage", (event) => {
+          if (event.key === key && event.newValue !== event.oldValue) {
+            dispatch({
+              type: INITIALIZE_STATE_FROM_STORAGE,
+              payload: event.newValue
+                ? JSON.parse(event.newValue)
+                : event.newValue,
+            });
+          }
         });
       } catch (error) {
         if (__DEV__) {
