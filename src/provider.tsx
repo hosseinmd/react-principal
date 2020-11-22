@@ -82,7 +82,7 @@ type ProvidersListProps = {
 function ProvidersList({ children, providers = [] }: ProvidersListProps) {
   return providers.reduce((previousValue, Current, index) => {
     return <Current key={String(index)}>{previousValue}</Current>;
-  }, children);
+  }, children) as JSX.Element;
 }
 
 export { Provider, ProvidersList };
