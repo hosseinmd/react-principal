@@ -76,7 +76,7 @@ function useHandleRef(ref: any, object: any) {
 
 type ProvidersListProps = {
   providers: ((props: any) => JSX.Element)[];
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
 };
 
 function ProvidersList({ children, providers = [] }: ProvidersListProps) {
