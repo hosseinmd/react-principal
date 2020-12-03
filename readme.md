@@ -109,4 +109,14 @@ function App() {
 
 ### Utils
 
-<a href="./Utils Readme.md">Utils Readme.md</a>
+[Utils Readme.md](UtilsReadme.md).
+
+### Generator
+
+React-principal has a command for auto generating store
+
+`$ generate-store <destination>`
+
+For example:
+`$ generate-store ./src/store`
+Generate a sample store into src/store
