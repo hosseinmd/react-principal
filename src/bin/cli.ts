@@ -9,7 +9,7 @@ const cli = meow(
 	  $ generate-store <destination>
 
 	Options
-    --cwd=<dir>               Working directory for files
+    --cwd=<dir>               Working directory for store
     --type=<local | global>   Default is global, local is using with useReducer
 
 	Examples

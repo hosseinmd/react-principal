@@ -62,6 +62,6 @@
   },
   "exclude": [
     "./examples",
-    "./files"
+    "./templates"
   ]
 }

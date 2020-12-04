@@ -7,7 +7,7 @@ function generateStore(
 ) {
   if (type === "local") {
     fse.copySync(
-      path.join(__dirname, "../../files/singleFileStore"),
+      path.join(__dirname, "../../templates/singleFileStore"),
       path.join(cwd, destination),
     );
 
@@ -15,7 +15,7 @@ function generateStore(
   }
 
   fse.copySync(
-    path.join(__dirname, "../../files/sample"),
+    path.join(__dirname, "../../templates/sample"),
     path.join(cwd, destination, "store"),
   );
 }
