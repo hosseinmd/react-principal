@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import {
   createStore,
   Provider,
@@ -168,7 +168,9 @@ const Footer = () => (
 let AddTodo = () => {
   const dispatch = store.useDispatch();
   let input;
-
+  const handleTestCallback = useCallback(() => {
+    input.value = "";
+  }, [input]);
   return (
     <div>
       <form
@@ -178,8 +180,7 @@ let AddTodo = () => {
           if (!input.value.trim()) {
             return;
           }
-          dispatch(addTodo(input.value));
-          input.value = "";
+          dispatch(addTodo(input.value), handleTestCallback);
         }}
       >
         <input
