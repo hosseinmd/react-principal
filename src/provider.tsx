@@ -29,6 +29,7 @@ const Provider = memo(
         stateContext,
         dispatchContext,
       } = store as PrivateStore<any>;
+      const callbackRef = useRef<any[]>([]);
       const [state, dispatch] = useReducer(
         reducer,
         initialState,
@@ -36,10 +37,21 @@ const Provider = memo(
       );
       const lastAction = useRef();
 
-      const dispatchWrapped = useCallback((action) => {
+      useEffect(() => {
+        if (state) {
+          const callbacks = callbackRef.current;
+          callbackRef.current = [];
+          callbacks.forEach((callback) => callback());
+        }
+      }, [state]);
+
+      const dispatchWrapped = useCallback((action, callback) => {
         lastAction.current = action;
         // @ts-ignore
         dispatch(action);
+        if (callback) {
+          callbackRef.current.push(callback);
+        }
       }, []);
 
       useHandleRef(ref, {
