@@ -4,7 +4,7 @@ type Handlers<STATE, ACTION> = {
   [type: string]: Reducer<STATE, ACTION>;
 };
 
-type CreateReducer = <STATE = any, ACTION extends Action = Action>(
+type CreateReducer = <STATE = any, ACTION extends Action<any> = Action<STATE>>(
   handlers: Handlers<STATE, ACTION>,
 ) => Reducer<STATE, ACTION>;
 

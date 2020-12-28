@@ -56,7 +56,7 @@ export const persisterCreator = function persisterCreator<
   };
 };
 
-export const persistReducer = <T, A extends Action>(
+export const persistReducer = <T, A extends Action<any> = Action<T>>(
   reducer: Reducer<T, A>,
 ): Reducer<T, A> => (state, action) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
