@@ -25,9 +25,19 @@ function Component() {
   const dispatch = store.useDispatch();
 
   return (
-    <p>
-      {foo} {bar}
-    </p>
+    <>
+      <p>
+        {foo} {bar}
+      </p>
+      <button
+        onclick={
+          () => dispatch({ type: "SET_FOO", payload: { foo: "foo" } }, callback)
+          // callback will call after state set
+        }
+      >
+        Set foo
+      </button>
+    </>
   );
 }
 
@@ -117,7 +127,7 @@ React-principal has a command for auto generating store
 
 `$ generate-store <destination>`
 
-	Options
+    Options
     --type=<local | global>   Default is global, local is using with useReducer
 
 For example:
@@ -126,4 +136,3 @@ Generate a sample store into src/store
 
 `$ generate-store ./src/myComponent` --type=local
 Generate a sample reducer action for using in useReducer into src/myComponent
-
