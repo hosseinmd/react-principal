@@ -1,6 +1,6 @@
 export type Action<S> = {
   type: any;
-  payload?: S;
+  payload: S;
 };
 
 export type Reducer<S, A = Action<S>> = (state: S, action: A) => S;
