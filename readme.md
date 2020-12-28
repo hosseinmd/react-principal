@@ -109,4 +109,21 @@ function App() {
 
 ### Utils
 
-<a href="./Utils Readme.md">Utils Readme.md</a>
+[Utils Readme.md](UtilsReadme.md).
+
+### Generator
+
+React-principal has a command for auto generating store
+
+`$ generate-store <destination>`
+
+	Options
+    --type=<local | global>   Default is global, local is using with useReducer
+
+For example:
+`$ generate-store ./src/store`
+Generate a sample store into src/store
+
+`$ generate-store ./src/myComponent` --type=local
+Generate a sample reducer action for using in useReducer into src/myComponent
+

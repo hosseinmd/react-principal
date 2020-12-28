@@ -3,14 +3,14 @@ import { useObserveContext, createObserveContext } from "./observe";
 import { Reducer } from "./types";
 export interface Store<S> {
   useState(nextObserveState?: (keyof S)[]): S;
-  useDispatch(): (action: any) => void;
+  useDispatch(): (action: any, callback?: () => void) => void;
 }
 
 export interface PrivateStore<S> {
   useState(nextObserveState?: (keyof S)[]): S;
-  useDispatch(): (action: any) => void;
+  useDispatch(): (action: any, callback?: () => void) => void;
   stateContext: React.Context<S>;
-  dispatchContext: React.Context<(action: any) => void>;
+  dispatchContext: React.Context<(action: any, callback?: () => void) => void>;
   reducer: Reducer<S>;
   initialState: S;
 }
@@ -27,7 +27,9 @@ export const createStore = <T extends { [x: string]: any }>({
   initialState: T;
 }): Store<T> => {
   const stateContext = createObserveContext(initialState);
-  const dispatchContext = createContext<(action: any) => void>(() => {});
+  const dispatchContext = createContext<(action: any, callback?: any) => void>(
+    () => {},
+  );
 
   const store: PrivateStore<T> = {
     stateContext,

@@ -29,7 +29,10 @@ For better performance of context you could use this
 ```js
 import { createObserveContext, useObserveContext } from "react-principal";
 
-const context = createObserveContext({ foo: "foo", bar: "bar" });
+const Context = createObserveContext();
+
+<Context.Provider value={{ foo: "foo", bar: "bar" }}>
+</Context.Provider>
 
 export function app() {
   const { foo } = useObserveContext(context, ["foo"]);
