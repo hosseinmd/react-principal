@@ -1,10 +1,17 @@
-import { Reducer, Action } from "./types";
+import { Reducer } from "./types";
 
-type Handlers<STATE, ACTION> = {
+type HandlerAction<S> = {
+  type: any;
+  payload: S;
+};
+type Handlers<STATE, ACTION = HandlerAction<STATE>> = {
   [type: string]: Reducer<STATE, ACTION>;
 };
 
-type CreateReducer = <STATE = any, ACTION extends Action<any> = Action<STATE>>(
+type CreateReducer = <
+  STATE = any,
+  ACTION extends HandlerAction<any> = HandlerAction<STATE>,
+>(
   handlers: Handlers<STATE, ACTION>,
 ) => Reducer<STATE, ACTION>;
 
