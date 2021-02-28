@@ -1,10 +1,10 @@
 import { __DEV__ } from "./utils";
 import { Reducer, Action, Optional } from "./types";
 
-const INITIALIZE_STATE_FROM_STORAGE = Symbol();
+export const INITIALIZE_STATE_FROM_STORAGE = Symbol();
 
 export const persisterCreator = function persisterCreator<
-  T extends { [x: string]: any },
+  T extends { [x: string]: any }
 >(Storage: any, key: string, mapStateToPersist?: (state: T) => Optional<T>) {
   return {
     persist(state: any, action: { type: any }) {
@@ -56,6 +56,10 @@ export const persisterCreator = function persisterCreator<
   };
 };
 
+/**
+ * @deprecated Don't need to use persisterCreator, you can use createReducer,
+ *   this function will be removed from v2
+ */
 export const persistReducer = <T, A extends Action<any> = Action<T>>(
   reducer: Reducer<T, A>,
 ): Reducer<T, A> => (state, action) => {
