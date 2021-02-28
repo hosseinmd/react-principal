@@ -67,11 +67,6 @@ A simple [Todo list App](https://github.com/hosseinmd/react-principal/blob/maste
 ### persist
 
 ```js
-/// wrap reducer with
-const reducer = persistReducer((state, action) => {
-  // some reduce
-});
-
 // config a persister
 const persister = persisterCreator(
   window.localStorage, // or react-native asyncStorage
