@@ -1,11 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useRef, useEffect, useCallback } from "react";
-import {
-  createStore,
-  Provider,
-  persisterCreator,
-  persistReducer,
-} from "../../../lib";
+import React, { useEffect, useCallback } from "react";
+import { createStore, Provider, createReducer } from "../../../lib";
 
 /*
  * ACTIONS (actions.js)
@@ -34,38 +29,35 @@ const toggleTodo = (id) => {
 /*
  * REDUCERS (reducers.js)
  */
-const reducer = persistReducer((state, action) => {
-  switch (action.type) {
-    case "ADD_TODO":
-      const id = (state.todos[state.todos.length - 1]?.id || 0) + 1;
-      return {
-        ...state,
-        todos: [
-          ...state.todos,
-          {
-            id,
-            text: action.text,
-            completed: false,
-          },
-        ],
-      };
-    case "TOGGLE_TODO":
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === action.id
-            ? { ...todo, completed: !todo.completed }
-            : todo,
-        ),
-      };
-    case "SET_VISIBILITY_FILTER":
-      return {
-        ...state,
-        visibilityFilter: action.filter,
-      };
-    default:
-      return state;
-  }
+const reducer = createReducer({
+  ADD_TODO: (state, action) => {
+    const id = (state.todos[state.todos.length - 1]?.id || 0) + 1;
+    return {
+      ...state,
+      todos: [
+        ...state.todos,
+        {
+          id,
+          text: action.text,
+          completed: false,
+        },
+      ],
+    };
+  },
+  TOGGLE_TODO: (state, action) => {
+    return {
+      ...state,
+      todos: state.todos.map((todo) =>
+        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    };
+  },
+  SET_VISIBILITY_FILTER: (state, action) => {
+    return {
+      ...state,
+      visibilityFilter: action.filter,
+    };
+  },
 });
 
 const initialState = {
@@ -73,7 +65,14 @@ const initialState = {
   visibilityFilter: "SHOW_ALL",
 };
 
-const store = createStore({ reducer, initialState });
+const store = createStore({
+  reducer,
+  initialState,
+  persistKey: "TODO",
+  mapStateToPersist: ({ todos }) => ({
+    todos,
+  }),
+});
 
 /*
  * Presentational Components
@@ -206,24 +205,13 @@ const App = () => (
   </div>
 );
 
-// Store state Persister
-const persister = persisterCreator(
-  window.localStorage,
-  "TODO",
-  ({ todos }) => ({
-    todos,
-  }),
-);
-
 export default () => {
-  const storeRef = useRef();
-
   useEffect(() => {
-    persister.setToState(storeRef);
+    store.setToState();
   }, []);
 
   return (
-    <Provider ref={storeRef} onStateDidChange={persister.persist} store={store}>
+    <Provider store={store}>
       <App />
     </Provider>
   );
