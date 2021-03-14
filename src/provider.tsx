@@ -1,13 +1,6 @@
-import React, {
-  useReducer,
-  useCallback,
-  forwardRef,
-  memo,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useReducer, useCallback, useEffect, useRef } from "react";
 import { Store, PrivateStore } from "./createStore";
+import { Action } from "./types";
 
 interface ProviderProps<T> {
   store: Store<T>;
@@ -17,74 +10,69 @@ interface ProviderProps<T> {
   children: any;
 }
 
-const Provider = memo(
-  forwardRef(
-    (
-      { children, store, onStateDidChange, initializer }: ProviderProps<any>,
-      ref,
-    ) => {
-      const {
-        reducer,
-        initialState,
-        stateContext,
-        dispatchContext,
-      } = store as PrivateStore<any>;
-      const callbackRef = useRef<any[]>([]);
-      const [state, dispatch] = useReducer(
-        reducer,
-        initialState,
-        initializer as any,
-      );
-      const lastAction = useRef();
+const Provider = <T extends {}>({
+  children,
+  store,
+  onStateDidChange,
+  initializer,
+}: ProviderProps<T>) => {
+  const {
+    reducer,
+    initialState,
+    stateContext,
+    dispatchContext,
+    persistKey,
+    persist,
+  } = store as PrivateStore<any>;
+  const callbackRef = useRef<any[]>([]);
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState,
+    initializer as any,
+  );
 
-      useEffect(() => {
-        if (state) {
-          const callbacks = callbackRef.current;
-          callbackRef.current = [];
-          callbacks.forEach((callback) => callback());
-        }
-      }, [state]);
+  const lastAction = useRef<Action<T>>();
 
-      const dispatchWrapped = useCallback((action, callback) => {
-        lastAction.current = action;
-        // @ts-ignore
-        dispatch(action);
-        if (callback) {
-          callbackRef.current.push(callback);
-        }
-      }, []);
+  useEffect(() => {
+    if (state) {
+      const callbacks = callbackRef.current;
+      callbackRef.current = [];
+      callbacks.forEach((callback) => callback());
+    }
+  }, [state]);
 
-      useHandleRef(ref, {
-        state,
-        dispatch: dispatchWrapped,
-      });
+  const dispatchWrapped = useCallback((action, callback) => {
+    lastAction.current = action;
+    // @ts-ignore
+    dispatch(action);
 
-      useEffect(() => {
-        if (lastAction.current) onStateDidChange?.(state, lastAction.current);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [state]);
+    if (callback) {
+      callbackRef.current.push(callback);
+    }
+  }, []);
 
-      return (
-        <dispatchContext.Provider value={dispatchWrapped}>
-          <stateContext.Provider value={state}>
-            {children}
-          </stateContext.Provider>
-        </dispatchContext.Provider>
-      );
-    },
-  ),
-);
+  Object.assign(store, {
+    dispatch: dispatchWrapped,
+    state,
+  });
 
-function useHandleRef(ref: any, object: any) {
-  useMemo(() => {
-    if (ref && "current" in ref) {
-      ref.current = object;
-    } else if (typeof ref === "function") {
-      ref(object);
+  useEffect(() => {
+    if (lastAction.current) {
+      onStateDidChange?.(state, lastAction.current);
+
+      if (persistKey) {
+        persist(state, lastAction.current);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, Object.values(object)]);
-}
+  }, [state]);
+
+  return (
+    <dispatchContext.Provider value={dispatchWrapped}>
+      <stateContext.Provider value={state}>{children}</stateContext.Provider>
+    </dispatchContext.Provider>
+  );
+};
 
 type ProvidersListProps = {
   providers: ((props: any) => JSX.Element)[];

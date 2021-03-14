@@ -1,34 +1,16 @@
 import renderer, { act } from "react-test-renderer";
-import React, { useRef } from "react";
-import { ExampleStoreTheme, changeTheme } from "../examples/store";
-import { Provider, persisterCreator } from "../lib";
-
-const StorageMock = {
-  data: {},
-  setItem(key, data) {
-    this.data[key] = data;
-  },
-  getItem(key) {
-    return this.data[key];
-  },
-};
-
-const persister = persisterCreator(StorageMock, "Theme");
+import React from "react";
+import { ExampleStoreTheme, changeTheme } from "../examples/persistStore";
+import { Provider } from "../lib";
 
 function TextInputTester() {
   const { theme } = ExampleStoreTheme.useState(["theme"]);
   return <p theme={theme} />;
 }
 
-let themeStoreRef;
 const App = () => {
-  themeStoreRef = useRef();
   return (
-    <Provider
-      ref={themeStoreRef}
-      onStateDidChange={persister.persist}
-      store={ExampleStoreTheme}
-    >
+    <Provider store={ExampleStoreTheme}>
       <TextInputTester />
     </Provider>
   );
@@ -45,7 +27,7 @@ test("store: create theme store", async () => {
     const {
       dispatch,
       state: { theme },
-    } = themeStoreRef.current;
+    } = ExampleStoreTheme;
     dispatch(changeTheme(theme === "light" ? "dark" : "light"));
   });
 
@@ -59,7 +41,7 @@ test("store: create theme ", async () => {
   expect(tree).toMatchSnapshot();
 
   await act(async () => {
-    await persister.setToState(themeStoreRef);
+    await ExampleStoreTheme.setToState();
   });
 
   tree = component.toJSON();
