@@ -32,12 +32,12 @@ export const createStore = <T extends { [x: string]: any }>({
   reducer,
   initialState,
   mapStateToPersist,
-  Storage = window.localStorage,
+  storage = window.localStorage,
   persistKey,
 }: {
   reducer: Reducer<T>;
   initialState: T;
-  Storage: any;
+  storage: any;
   persistKey: string;
   mapStateToPersist?: (state: T) => Partial<T>;
 }): Store<T> => {
@@ -60,7 +60,7 @@ export const createStore = <T extends { [x: string]: any }>({
     useDispatch: () => useContext(dispatchContext),
     persist(state: T, action: { type: any }) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
-        Storage.setItem(
+        storage.setItem(
           persistKey,
           JSON.stringify(mapStateToPersist ? mapStateToPersist(state) : state),
         );
@@ -69,7 +69,7 @@ export const createStore = <T extends { [x: string]: any }>({
 
     async setToState() {
       try {
-        const storedState = await Storage.getItem(persistKey);
+        const storedState = await storage.getItem(persistKey);
 
         if (!storedState) {
           return;

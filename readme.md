@@ -67,31 +67,27 @@ A simple [Todo list App](https://github.com/hosseinmd/react-principal/blob/maste
 ### persist
 
 ```js
-// config a persister
-const persister = persisterCreator(
-  window.localStorage, // or react-native asyncStorage
-  "UniqKey",
-  ({ todos }) => ({
+const store = createStore({
+  reducer,
+  initialState,
+  // config a persister
+  storage: window.localStorage,
+  persistKey: "UniqKey",
+  mapStateToPersist: ({ todos }) => ({
     todos, // persist just todos
   }),
-);
+});
 
 export default () => {
-  const storeRef = useRef();
-  // you can save ref in global place for access to state and dispatch out of children components like `storeRef.current.state`
+  // you can save ref in global place for access to state and dispatch out of children components like `store.state`
   // Doesn't need middleWare like redux, storeRef working vary well
 
   useEffect(() => {
-    persister.setToState(storeRef);
+    store.setToState();
   }, []);
 
   return (
-    <Provider
-      ref={storeRef}
-      // for catch state changes
-      onStateDidChange={persister.persist}
-      store={store}
-    >
+    <Provider store={store}>
       <App />
     </Provider>
   );

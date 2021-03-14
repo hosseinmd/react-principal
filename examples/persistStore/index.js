@@ -17,6 +17,6 @@ const StorageMock = {
 export const ExampleStoreTheme = createStore({
   reducer,
   initialState,
-  Storage: StorageMock,
+  storage: StorageMock,
   persistKey: "Theme",
 });
