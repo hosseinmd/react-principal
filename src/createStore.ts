@@ -46,6 +46,17 @@ export const createStore = <T extends { [x: string]: any }>({
     () => {},
   );
 
+  function syncTabs(event: StorageEvent) {
+    const { dispatch } = store;
+
+    if (event.key === persistKey && event.newValue !== event.oldValue) {
+      dispatch({
+        type: INITIALIZE_STATE_FROM_STORAGE,
+        payload: event.newValue ? JSON.parse(event.newValue) : event.newValue,
+      });
+    }
+  }
+
   const store: PrivateStore<T> = {
     persistKey,
     dispatch: () => {},
@@ -69,6 +80,9 @@ export const createStore = <T extends { [x: string]: any }>({
 
     async setToState() {
       try {
+        /** Listening to previously added event */
+        window.removeEventListener?.("storage", syncTabs);
+
         const storedState = await storage.getItem(persistKey);
 
         if (!storedState) {
@@ -88,16 +102,7 @@ export const createStore = <T extends { [x: string]: any }>({
         });
 
         /** Listening to events between tabs */
-        window.addEventListener?.("storage", (event) => {
-          if (event.key === persistKey && event.newValue !== event.oldValue) {
-            dispatch({
-              type: INITIALIZE_STATE_FROM_STORAGE,
-              payload: event.newValue
-                ? JSON.parse(event.newValue)
-                : event.newValue,
-            });
-          }
-        });
+        window.addEventListener?.("storage", syncTabs);
       } catch (error) {
         if (__DEV__) {
           console.error(error);
