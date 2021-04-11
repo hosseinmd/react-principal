@@ -21,7 +21,7 @@ export interface PrivateStore<S> extends Store<S> {
   dispatchContext: React.Context<(action: any, callback?: () => void) => void>;
   reducer: Reducer<S>;
   initialState: S;
-  persistKey: string;
+  persistKey?: string;
 }
 
 /**
@@ -37,8 +37,8 @@ export const createStore = <T extends { [x: string]: any }>({
 }: {
   reducer: Reducer<T>;
   initialState: T;
-  storage: any;
-  persistKey: string;
+  storage?: any;
+  persistKey?: string;
   mapStateToPersist?: (state: T) => Partial<T>;
 }): Store<T> => {
   const stateContext = createObserveContext(initialState);
