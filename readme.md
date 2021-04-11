@@ -71,6 +71,7 @@ const store = createStore({
   reducer,
   initialState,
   // config a persister
+  // AsyncStorage for react-native
   storage: window.localStorage,
   persistKey: "UniqKey",
   mapStateToPersist: ({ todos }) => ({
