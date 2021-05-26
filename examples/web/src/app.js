@@ -68,6 +68,7 @@ const initialState = {
 const store = createStore({
   reducer,
   initialState,
+  storage: window.sessionStorage,
   persistKey: "TODO",
   mapStateToPersist: ({ todos }) => ({
     todos,

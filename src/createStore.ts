@@ -37,6 +37,7 @@ export const createStore = <T extends { [x: string]: any }>({
 }: {
   reducer: Reducer<T>;
   initialState: T;
+  /** window.localStorage, window.sessionStorage, AsyncStorage supported */
   storage?: any;
   persistKey?: string;
   mapStateToPersist?: (state: T) => Partial<T>;
@@ -80,9 +81,6 @@ export const createStore = <T extends { [x: string]: any }>({
 
     async setToState() {
       try {
-        /** Listening to previously added event */
-        window.removeEventListener?.("storage", syncTabs);
-
         const storedState = await storage.getItem(persistKey);
 
         if (!storedState) {
@@ -101,8 +99,12 @@ export const createStore = <T extends { [x: string]: any }>({
           payload: mappedState,
         });
 
-        /** Listening to events between tabs */
-        window.addEventListener?.("storage", syncTabs);
+        if (persistKey) {
+          /** Remove previously added event */
+          window.removeEventListener?.("storage", syncTabs);
+          /** Listening to events between tabs */
+          window.addEventListener?.("storage", syncTabs);
+        }
       } catch (error) {
         if (__DEV__) {
           console.error(error);
