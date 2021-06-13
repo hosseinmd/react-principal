@@ -21,7 +21,7 @@ export interface PrivateStore<S> extends Store<S> {
   dispatchContext: React.Context<(action: any, callback?: () => void) => void>;
   reducer: Reducer<S>;
   initialState: S;
-  persistKey: string;
+  persistKey?: string;
 }
 
 /**
@@ -37,8 +37,9 @@ export const createStore = <T extends { [x: string]: any }>({
 }: {
   reducer: Reducer<T>;
   initialState: T;
-  storage: any;
-  persistKey: string;
+  /** Window.localStorage, window.sessionStorage, AsyncStorage supported */
+  storage?: any;
+  persistKey?: string;
   mapStateToPersist?: (state: T) => Partial<T>;
 }): Store<T> => {
   const stateContext = createObserveContext(initialState);
@@ -80,9 +81,6 @@ export const createStore = <T extends { [x: string]: any }>({
 
     async setToState() {
       try {
-        /** Listening to previously added event */
-        window.removeEventListener?.("storage", syncTabs);
-
         const storedState = await storage.getItem(persistKey);
 
         if (!storedState) {
@@ -101,8 +99,12 @@ export const createStore = <T extends { [x: string]: any }>({
           payload: mappedState,
         });
 
-        /** Listening to events between tabs */
-        window.addEventListener?.("storage", syncTabs);
+        if (persistKey) {
+          /** Remove previously added event */
+          window.removeEventListener?.("storage", syncTabs);
+          /** Listening to events between tabs */
+          window.addEventListener?.("storage", syncTabs);
+        }
       } catch (error) {
         if (__DEV__) {
           console.error(error);
