@@ -42,6 +42,21 @@ function calculateChangedBits(prev: { [x: string]: any }, next: any) {
   const keys = getKeys(next);
 
   if (__DEV__) {
+    const prevKeys = getKeys(next);
+    if (prevKeys.length !== keys.length) {
+      let missedStates = prevKeys.filter((v) => !keys.includes(v));
+
+      missedStates = [
+        ...missedStates,
+        ...keys.filter((v) => !prevKeys.includes(v)),
+      ];
+
+      invariant(
+        prevKeys.length === keys.length,
+        `expected the number of states will not change, ${missedStates} is missed`,
+      );
+    }
+
     invariant(
       keys.length < 32,
       `expected return state have property least than 32 but has ${keys.length} property`,
