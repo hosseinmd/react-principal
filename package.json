@@ -1,6 +1,6 @@
 {
   "name": "react-principal",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A state management with react context for apps which using hooks.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
