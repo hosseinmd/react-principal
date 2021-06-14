@@ -6,4 +6,8 @@ export default createReducer({
     ...state,
     theme,
   }),
+  [types.WRONG]: (state) => ({
+    ...state,
+    WRONG: true,
+  }),
 });

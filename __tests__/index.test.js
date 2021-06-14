@@ -1,6 +1,6 @@
 import renderer, { act } from "react-test-renderer";
 import React from "react";
-import { ExampleStoreTheme, changeTheme } from "../examples/store";
+import { ExampleStoreTheme, changeTheme, wrongAction } from "../examples/store";
 import { Provider } from "../lib";
 
 function TextInputTester() {
@@ -11,8 +11,12 @@ function TextInputTester() {
     dispatch(changeTheme(theme === "light" ? "dark" : "light"));
   };
 
+  const wrong = () => {
+    dispatch(wrongAction());
+  };
+
   return (
-    <p theme={theme} toggleTheme={toggleTheme}>
+    <p theme={theme} toggleTheme={toggleTheme} wrong={wrong}>
       {theme}
     </p>
   );
@@ -37,4 +41,8 @@ test("store: toggle theme", () => {
 
   tree = component.toJSON();
   expect(tree).toMatchSnapshot();
+});
+
+test("store: should be throw error", () => {
+  expect(() => tree.props.wrong()).toThrowError();
 });

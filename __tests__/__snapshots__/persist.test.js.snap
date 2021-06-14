@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store: create theme  1`] = `
+<p
+  theme="light"
+/>
+`;
+
+exports[`store: create theme  2`] = `
+<p
+  theme="dark"
+/>
+`;
+
+exports[`store: create theme store 1`] = `
+<p
+  theme="light"
+/>
+`;
+
+exports[`store: create theme store 2`] = `
+<p
+  theme="dark"
+/>
+`;

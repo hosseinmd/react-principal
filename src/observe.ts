@@ -42,7 +42,8 @@ function calculateChangedBits(prev: { [x: string]: any }, next: any) {
   const keys = getKeys(next);
 
   if (__DEV__) {
-    const prevKeys = getKeys(next);
+    const prevKeys = getKeys(prev);
+
     if (prevKeys.length !== keys.length) {
       let missedStates = prevKeys.filter((v) => !keys.includes(v));
 

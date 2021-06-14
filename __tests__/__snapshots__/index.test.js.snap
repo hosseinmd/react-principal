@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store: create theme store 1`] = `
+<p
+  theme="light"
+  toggleTheme={[Function]}
+  wrong={[Function]}
+>
+  light
+</p>
+`;
+
+exports[`store: toggle theme 1`] = `
+<p
+  theme="dark"
+  toggleTheme={[Function]}
+  wrong={[Function]}
+>
+  dark
+</p>
+`;
