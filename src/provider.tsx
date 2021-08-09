@@ -2,11 +2,10 @@ import React, { useReducer, useCallback, useEffect, useRef } from "react";
 import { Store, PrivateStore } from "./createStore";
 import { Action } from "./types";
 
-interface ProviderProps<T> {
+export interface ProviderProps<T> {
   store: Store<T>;
   onStateDidChange?: (state: T, lastAction: any) => void;
   initializer?: (state: T) => any;
-  ref?: React.Ref<{ state: T; dispatch: () => void }>;
   children: any;
 }
 

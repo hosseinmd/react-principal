@@ -1,4 +1,6 @@
+import React from "react";
 import { createContext, useContext } from "react";
+import { Provider, ProviderProps } from ".";
 import { useObserveContext, createObserveContext } from "./observe";
 import { INITIALIZE_STATE_FROM_STORAGE } from "./persist";
 import { Reducer } from "./types";
@@ -14,6 +16,7 @@ export interface Store<S> {
   setToState(): Promise<void>;
   dispatch: (action: any, callback?: () => void) => void;
   state: S;
+  Provider: (props: Omit<ProviderProps<any>, "store">) => any;
 }
 
 export interface PrivateStore<S> extends Store<S> {
@@ -78,7 +81,9 @@ export const createStore = <T extends { [x: string]: any }>({
         );
       }
     },
-
+    Provider: (props) => {
+      return <Provider store={store} {...props} />;
+    },
     async setToState() {
       try {
         const storedState = await storage.getItem(persistKey);
