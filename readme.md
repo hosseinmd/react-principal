@@ -109,6 +109,10 @@ function App() {
 }
 ```
 
+### Examples
+
+Please look templates folder
+
 ### Utils
 
 [Utils Readme.md](UtilsReadme.md).
@@ -120,11 +124,14 @@ React-principal has a command for auto generating store
 `$ generate-store <destination>`
 
     Options
-    --type=<local | global>   Default is global, local is using with useReducer
+    --type=<reducer | single | global>   Default is global,single create store in single file, reducer is using with useReducer,
 
-For example:
+##### Example:
+
 `$ generate-store ./src/store`
-Generate a sample store into src/store
 
-`$ generate-store ./src/myComponent` --type=local
-Generate a sample reducer action for using in useReducer into src/myComponent
+     Generate a sample store into src/store
+
+`$ generate-store ./src/myComponent --type=reducer`
+
+    Generate a sample reducer action for using in useReducer into src/myComponent

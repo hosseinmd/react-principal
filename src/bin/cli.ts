@@ -10,7 +10,7 @@ const cli = meow(
 
 	Options
     --cwd=<dir>               Working directory for store
-    --type=<local | global>   Default is global, local is using with useReducer
+    --type=<reducer | single | global>   Default is global,single create store in single file, reducer is using with useReducer
 
 	Examples
 	  Generate a sample store into src/store
