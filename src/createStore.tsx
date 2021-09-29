@@ -28,7 +28,7 @@ export interface PrivateStore<S> extends Store<S> {
 }
 
 /**
- * This function give you an store, use that in your components which want to
+ * This function gives you a store. Use it in your components where you want to
  * connect to store and provider
  */
 export const createStore = <T extends { [x: string]: any }>({

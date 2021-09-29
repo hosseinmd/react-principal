@@ -23,10 +23,11 @@
     "url": "git+https://github.com/hosseinmd/react-principal.git"
   },
   "keywords": [
+    "react",
     "react-native",
     "react-native-web",
-    "calendar",
-    "jalali"
+    "context",
+    "reducer"
   ],
   "author": "Hossein mohammadi",
   "license": "MIT",
