@@ -35,7 +35,7 @@ export const createStore = <T extends { [x: string]: any }>({
   reducer,
   initialState,
   mapStateToPersist,
-  storage = window.localStorage,
+  storage = typeof window !== "undefined" ? window.localStorage : undefined,
   persistKey,
 }: {
   reducer: Reducer<T>;
@@ -75,7 +75,7 @@ export const createStore = <T extends { [x: string]: any }>({
     useDispatch: () => useContext(dispatchContext),
     persist(state: T, action: { type: any }) {
       if (action.type !== INITIALIZE_STATE_FROM_STORAGE) {
-        storage.setItem(
+        storage?.setItem(
           persistKey,
           JSON.stringify(mapStateToPersist ? mapStateToPersist(state) : state),
         );
@@ -86,7 +86,7 @@ export const createStore = <T extends { [x: string]: any }>({
     },
     async setToState() {
       try {
-        const storedState = await storage.getItem(persistKey);
+        const storedState = await storage?.getItem(persistKey);
 
         if (!storedState) {
           return;
@@ -104,7 +104,7 @@ export const createStore = <T extends { [x: string]: any }>({
           payload: mappedState,
         });
 
-        if (persistKey) {
+        if (typeof window !== "undefined" && persistKey) {
           /** Remove previously added event */
           window.removeEventListener?.("storage", syncTabs);
           /** Listening to events between tabs */
