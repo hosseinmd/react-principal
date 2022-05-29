@@ -6,7 +6,7 @@ type HandlerAction<S> = {
   payload: S;
 };
 type Handlers<STATE, ACTION = HandlerAction<STATE>> = {
-  [type: string]: Reducer<STATE, ACTION>;
+  [type: string | symbol]: Reducer<STATE, ACTION>;
 };
 
 type CreateReducer = <STATE = any>(handlers: Handlers<STATE>) => Reducer<STATE>;
