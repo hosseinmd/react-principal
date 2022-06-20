@@ -3,10 +3,10 @@ import { createContext, useContext } from "react";
 import { Provider, ProviderProps } from ".";
 import { useObserveContext, createObserveContext } from "./observe";
 import { INITIALIZE_STATE_FROM_STORAGE } from "./persist";
-import { Reducer } from "./types";
+import { Action, Reducer } from "./types";
 export interface Store<S> {
-  useState(nextObserveState?: (keyof S)[]): S;
-  useDispatch(): (action: any, callback?: () => void) => void;
+  useState(): S;
+  useDispatch(): (action: Action<S>, callback?: () => void) => void;
   persist(
     state: S,
     action: {
@@ -69,8 +69,8 @@ export const createStore = <T extends { [x: string]: any }>({
     dispatchContext,
     reducer,
     initialState,
-    useState: (nextObserveState?: (keyof T)[]): T => {
-      return useObserveContext(stateContext, nextObserveState);
+    useState: (): T => {
+      return useObserveContext(stateContext);
     },
     useDispatch: () => useContext(dispatchContext),
     persist(state: T, action: { type: any }) {

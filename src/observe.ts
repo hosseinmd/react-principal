@@ -1,36 +1,26 @@
-import React, { createContext } from "react";
+import React, { createContext, useRef } from "react";
 //@ts-ignore
 import invariant from "invariant";
 import { __DEV__ } from "./utils";
 
-function useObserveContext<T>(
-  context: React.Context<T>,
-  nextObserveState?: (keyof T)[],
-): T {
+function useObserveContext<T>(context: React.Context<T>): T {
   const stateKeys = getKeys((context as any)._currentValue);
 
   // default observe to whole state
-  let observeKeys = stateKeys;
+  const observeKeys = useRef(new Set(stateKeys));
 
-  if (nextObserveState) {
-    if (__DEV__) {
-      invariant(
-        Array.isArray(nextObserveState),
-        `useState: nextObserveState expected to be an Array of string but ${typeof nextObserveState} was received`,
-      );
-      nextObserveState.forEach((observeKey) => {
-        invariant(
-          stateKeys.includes(observeKey as string),
-          `useState: nextObserveState expected to be an Array of state keys but ${observeKey} is not one of the state`,
-        );
-      });
-    }
-    observeKeys = nextObserveState.sort() as string[];
-  }
+  const observeBit = getBits(stateKeys, [...observeKeys.current].sort());
 
-  const observeBit = getBits(stateKeys, observeKeys);
+  const state = readContext(context, observeBit);
 
-  return readContext(context, observeBit);
+  return new Proxy(state, {
+    get(target, key) {
+      if (key in target) {
+        observeKeys.current.add(key as string);
+        return target[key];
+      }
+    },
+  });
 }
 
 function getKeys(obj: object) {
