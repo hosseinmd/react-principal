@@ -3,7 +3,12 @@ export type Action<S> = {
   payload: Partial<S>;
 };
 
-export type Reducer<S, A = Action<S>> = (state: S, action: A) => S;
+type ActionHandler<S> = {
+  type: any;
+  payload: S;
+};
+
+export type Reducer<S, A = ActionHandler<S>> = (state: S, action: A) => S;
 
 export type Optional<T> = {
   [P in keyof T]?: T[P];
