@@ -1,8 +1,8 @@
 import { INITIALIZE_STATE_FROM_STORAGE } from "./persist";
-import { Action, Reducer } from "./types";
+import { Reducer } from "./types";
 
-type Handlers<STATE, ACTION = Action<STATE>> = {
-  [type: string | symbol]: Reducer<STATE, ACTION>;
+type Handlers<STATE> = {
+  [type: string | symbol]: Reducer<STATE>;
 };
 
 type CreateReducer = <STATE = any>(handlers: Handlers<STATE>) => Reducer<STATE>;
