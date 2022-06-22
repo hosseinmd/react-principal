@@ -1,11 +1,13 @@
 import { INITIALIZE_STATE_FROM_STORAGE } from "./persist";
-import { Reducer } from "./types";
+import { Reducer, Action } from "./types";
 
 type Handlers<STATE> = {
   [type: string | symbol]: Reducer<STATE>;
 };
 
-type CreateReducer = <STATE = any>(handlers: Handlers<STATE>) => Reducer<STATE>;
+type CreateReducer = <STATE = any>(
+  handlers: Handlers<STATE>,
+) => Reducer<STATE, Action<STATE>>;
 
 export const createReducer: CreateReducer = (handlers) => (state, action) => {
   if (action.type === INITIALIZE_STATE_FROM_STORAGE) {
