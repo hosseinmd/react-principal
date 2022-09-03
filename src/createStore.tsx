@@ -13,7 +13,7 @@ export interface Store<S> {
       type: any;
     },
   ): void;
-  setToState(): Promise<void>;
+  setToState(): Promise<S | undefined>;
   dispatch: (action: any, callback?: () => void) => void;
   state: S;
   Provider: (props: Omit<ProviderProps<any>, "store">) => any;
@@ -110,6 +110,8 @@ export const createStore = <T extends { [x: string]: any }>({
           /** Listening to events between tabs */
           window.addEventListener?.("storage", syncTabs);
         }
+
+        return stateObject;
       } catch (error) {
         if (__DEV__) {
           console.error(error);

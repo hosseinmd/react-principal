@@ -96,7 +96,7 @@ function readContext(Context: any, observedBits: number) {
   return dispatcher.readContext(Context, observedBits);
 }
 
-function createObserveContext<T>(defaultValue: T) {
+function createObserveContext<T extends object>(defaultValue: T) {
   return createContext(defaultValue, calculateChangedBits);
 }
 
